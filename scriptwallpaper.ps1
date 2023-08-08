@@ -1,3 +1,20 @@
+# Instala o Windows Package Manager (winget)
+Write-Output "Baixando e instalando o Windows Package Manager..."
+$wingetInstallerUrl = "https://github.com/microsoft/winget-cli/releases/download/v1.1.12653/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle"
+Invoke-WebRequest -Uri $wingetInstallerUrl -OutFile "$env:TEMP\winget.msixbundle"
+Add-AppPackage -Path "$env:TEMP\winget.msixbundle"
+Write-Output "Windows Package Manager instalado."
+
+# Verifica se o Chocolatey já está instalado
+if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
+    # Instala o Chocolatey
+    Write-Output "Instalando o Chocolatey..."
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+    Write-Output "Chocolatey instalado."
+} else {
+    Write-Output "O Chocolatey já está instalado."
+}
+
 # Cria a pasta proatec em AppData\Local
 Write-Output "Criando pasta proatec..."
 $folderPath = New-Item -Path "$env:LOCALAPPDATA\" -Name "proatec" -ItemType "directory"
